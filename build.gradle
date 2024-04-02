@@ -1,0 +1,73 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.3.5"
+    id("com.diffplug.spotless") version "6.23.3"
+    id("io.micronaut.aot") version "4.3.5"
+}
+
+version = "0.1"
+group = "example.micronaut"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.security:micronaut-security-oauth2")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.views:micronaut-views-fieldset")
+    implementation("io.micronaut.views:micronaut-views-thymeleaf")
+    implementation("io.micronaut.security:micronaut-security")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.37.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.yaml:snakeyaml")
+    aotPlugins platform("io.micronaut.platform:micronaut-platform:4.3.7")
+    aotPlugins("io.micronaut.security:micronaut-security-aot")
+}
+
+
+application {
+    mainClass.set("example.micronaut.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("example.micronaut.*")
+    }
+    aot {
+    // Please review carefully the optimizations enabled below
+    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        configurationProperties.put("micronaut.security.jwks.enabled","false")
+        configurationProperties.put("micronaut.security.openid-configuration.enabled","false")
+    }
+}
+
+
+spotless {
+    java {
+        licenseHeaderFile(file("LICENSEHEADER"))
+    }
+}
+

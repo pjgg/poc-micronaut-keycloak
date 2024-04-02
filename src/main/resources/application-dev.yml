@@ -1,0 +1,21 @@
+micronaut:
+  server:
+    port: 8081
+#  security:
+#    authentication: idtoken
+#    oauth2:
+#      clients:
+#        keycloak:
+#          client-secret: '${OAUTH_CLIENT_SECRET:HemUWicHEJsywGLhCoDgOBdsIJ1clh3h}'
+#          client-id: '${OAUTH_CLIENT_ID:myclient}'
+#          openid:
+#            issuer: 'http://127.0.0.1:8080/realms/realmOne'
+#        keycloak:
+#          client-secret: '${OAUTH_CLIENT_SECRET:JTCh0Y6bLSCAfztWiTQuRSg2weWqAI7E}'
+#          client-id: '${OAUTH_CLIENT_ID:myclient}'
+#          openid:
+#            issuer: 'http://127.0.0.1:8080/realms/realmTwo'
+#    endpoints:
+#      logout:
+#        get-allowed: true
+
